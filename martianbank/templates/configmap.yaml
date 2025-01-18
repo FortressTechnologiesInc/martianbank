@@ -4,5 +4,5 @@ metadata:
   name: configmap-martianbank
 data:
     DB_URL: "mongodb+srv://admin:admin123@mongodb-demo.p1jch.mongodb.net/?retryWrites=true&w=majority&appName=mongodb-demo"
-    JWT_SECRET: ""
+    JWT_SECRET: "admin123"
 # Set any string as a JWT_SECRET for generating and verifying JWT tokens.
