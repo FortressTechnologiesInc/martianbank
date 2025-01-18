@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: configmap-martianbank
 data:
-    DB_URL: "mongodb://root:example@mongodb:27017"
+    DB_URL: "mongodb+srv://admin:admin123@mongodb-demo.p1jch.mongodb.net/?retryWrites=true&w=majority&appName=mongodb-demo"
     JWT_SECRET: ""
 # Set any string as a JWT_SECRET for generating and verifying JWT tokens.
