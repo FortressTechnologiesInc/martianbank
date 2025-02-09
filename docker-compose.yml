@@ -129,7 +129,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=denifer
       - MONGO_INITDB_ROOT_PASSWORD=admin123
-      - MONGO_URI=mongodb+srv://denifer:admin123@cluster0.mongodb.net/test?retryWrites=true&w=majority
+      - MONGO_URI=mongodb+srv://denifer:admin123@mongodb-demo.p1jch.mongodb.net/?retryWrites=true&w=majority&appName=mongodb-demo
+      
     restart: always
     networks:
       - bankapp-network
