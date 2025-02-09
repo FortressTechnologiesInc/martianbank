@@ -30,11 +30,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      # Step 4: Set up Docker (install Docker)
+      # Step 4: Install Docker (using docker/setup-buildx-action)
       - name: Set up Docker
-        uses: docker/setup-docker@v2
+        uses: docker/setup-buildx-action@v2  # Replacing deprecated docker/setup-docker action
         with:
-          docker-version: '20.10.7'  # You can specify a different version if needed
+          version: '20.10.7'  # Specify your desired Docker version
 
       # Step 5: Log in to Docker Hub (or other container registry if needed)
       - name: Log in to Docker Hub
