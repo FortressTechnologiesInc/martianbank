@@ -40,14 +40,14 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}  # Set up secrets in GitHub repository settings
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}  # Set up secrets in GitHub repository settings
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Step 6: Build and deploy using Docker Compose
       - name: Build and deploy using Docker Compose
         run: |
           # Log in to Docker registry
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
           # Pull the necessary Docker images (if needed)
           docker-compose pull
