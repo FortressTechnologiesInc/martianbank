@@ -34,14 +34,21 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2  # Replacing deprecated docker/setup-docker action
 
-      # Step 5: Log in to Docker Hub (or other container registry if needed)
+      # Step 5: Install Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version  # Verify installation
+
+      # Step 6: Log in to Docker Hub (or other container registry if needed)
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}  # Set up secrets in GitHub repository settings
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Step 6: Build and deploy using Docker Compose
+      # Step 7: Build and deploy using Docker Compose
       - name: Build and deploy using Docker Compose
         run: |
           # Log in to Docker registry
@@ -56,7 +63,7 @@ jobs:
           # Deploy and start the services
           docker-compose up -d  # -d runs the containers in detached mode
 
-      # Step 7: Optionally, perform cleanup or other post-deployment tasks
+      # Step 8: Optionally, perform cleanup or other post-deployment tasks
       - name: Clean up resources
         run: |
           # You can use this step to prune unused Docker images or containers to free up space
@@ -67,7 +74,7 @@ jobs:
         run: |
           sleep 10  # Adjust the sleep duration as needed for your application
 
-      # Step 8: Verify the deployment
+      # Step 9: Verify the deployment
       - name: Verify Deployment
         run: |
           docker ps  # Check if the containers are running
