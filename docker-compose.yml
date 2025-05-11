@@ -1,6 +1,7 @@
 version: "3.9"
 
 services:
+  # Frontend UI service
   ui:
     build:
       context: ./ui
@@ -15,6 +16,7 @@ services:
     networks:
       - bankapp-network
 
+  # Nginx reverse proxy
   nginx:
     build: 
       context: ./nginx
@@ -31,6 +33,7 @@ services:
     networks:
       - bankapp-network
 
+  # Customer authentication service
   customer-auth:
     build:
       context: ./customer-auth
@@ -45,6 +48,7 @@ services:
     networks:
       - bankapp-network
 
+  # ATM locator service
   atm-locator:
     build:
       context: ./atm-locator
@@ -58,24 +62,26 @@ services:
     restart: always
     networks:
       - bankapp-network
-  
+
+  # Dashboard service
   dashboard:
-    container_name: dashboard
-    hostname: dashboard
-    ports:
-      - "5000:5000"
-    restart: always
-    image: martian-bank-dashboard
     build:
       context: .
       dockerfile: dashboard/Dockerfile
+    container_name: dashboard
+    hostname: dashboard
+    image: martian-bank-dashboard
+    ports:
+      - "5000:5000"
+    restart: always
     environment:
       ACCOUNT_HOST: accounts
       TRANSACTION_HOST: transactions
       LOAN_HOST: loan
     networks:
       - bankapp-network
-    
+
+  # Accounts service
   accounts:
     build:
       context: .
@@ -87,6 +93,7 @@ services:
     networks:
       - bankapp-network
 
+  # Loan service
   loan:
     build:
       context: .
@@ -98,6 +105,7 @@ services:
     networks:
       - bankapp-network
 
+  # Transactions service
   transactions:
     build:
       context: .
@@ -107,8 +115,9 @@ services:
     image: martian-bank-transactions
     restart: always
     networks:
-      - bankapp-network 
+      - bankapp-network
 
+  # Performance testing with Locust
   locust:
     build:
       context: ./performance_locust
@@ -121,16 +130,18 @@ services:
     networks:
       - bankapp-network
 
-  # Cloud MongoDB connection setup (no local Mongo container)
-  mongo-cloud:
-    container_name: mongo-cloud
-    hostname: mongo-cloud
+  # Local MongoDB container
+  mongo:
+    container_name: mongo
+    hostname: mongo
     image: mongo:latest
     environment:
       - MONGO_INITDB_ROOT_USERNAME=denifer
       - MONGO_INITDB_ROOT_PASSWORD=admin123
-      - MONGO_URI=mongodb+srv://denifer:admin123@mongodb-demo.p1jch.mongodb.net/?retryWrites=true&w=majority&appName=mongodb-demo
-      
+    volumes:
+      - mongo-data:/data/db  # Persist MongoDB data
+    ports:
+      - "27017:27017"  # Expose MongoDB port
     restart: always
     networks:
       - bankapp-network
@@ -138,3 +149,8 @@ services:
 networks:
   bankapp-network:
     driver: bridge
+
+# Define volumes for MongoDB data persistence
+volumes:
+  mongo-data:
+    driver: local
